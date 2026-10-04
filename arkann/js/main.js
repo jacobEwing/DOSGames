@@ -2,10 +2,9 @@
 import * as vga from 'lib/vga.js';
 import * as input from 'lib/input.js';
 import * as timing from 'lib/timing.js';
-import { loadLevels } from 'lib/assets.js';
 import { state } from './state.js';
 import { loadFontInto, drainKeyboard, continue_game } from './helpers.js';
-import { play_game } from './game.js';
+import { play_game, loadLevels } from './game.js';
 import {
   opscreen, mainmenu, show_credits, show_high_score_list,
   explain_game, test_high_scores,

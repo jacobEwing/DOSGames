@@ -4,7 +4,7 @@ import * as vga from 'lib/vga.js';
 import * as input from 'lib/input.js';
 import * as timing from 'lib/timing.js';
 import { menubox } from 'lib/ui.js';
-import { loadPic, loadLevels } from 'lib/assets.js';
+import { loadPic } from 'lib/assets.js';
 import { state } from './state.js';
 
 // ---- Constants (from the C's #defines) --------------------------------------
@@ -644,4 +644,25 @@ export async function play_game(continuing) {
     if (lives > 0) state.current_level++;
   } // end level loop
   input.setWantLock(false);
+}
+
+// Levels: byte 0 = numLevels; then per level: numBricks, pillProb, then
+// numBricks*3 bytes of (bx, by, type).  This is Arkann's format; other games
+// may want their own loader.
+export async function loadLevels(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`loadLevels ${url}: ${r.status}`);
+  const buf = new Uint8Array(await r.arrayBuffer());
+  const numLevels = buf[0];
+  let p = 1;
+  const levels = [];
+  for (let n = 0; n < numLevels; n++) {
+    const numBricks = buf[p++], pillProbability = buf[p++];
+    const bricks = new Array(numBricks);
+    for (let m = 0; m < numBricks; m++) {
+      bricks[m] = { bx: buf[p++], by: buf[p++], type: buf[p++] };
+    }
+    levels.push({ numBricks, pillProbability, bricks });
+  }
+  return { numLevels, levels };
 }
