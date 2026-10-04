@@ -893,6 +893,7 @@ async function main() {
   const canvas = document.getElementById('screen');
   vga.attachCanvas(canvas);
   input.initInput(canvas);
+  input.setWantLock(true);
   timing.startLoop(() => vga.present());
 
   await load_pics();
@@ -923,7 +924,11 @@ async function main() {
         break;
       case 4:
         done = true;
-        break;
+        input.setWantLock(false);
+        if (document.pointerLockElement) document.exitPointerLock();
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = HOME_URL;
+        return;
     }
   }
 }
