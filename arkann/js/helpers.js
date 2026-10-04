@@ -1,13 +1,11 @@
-// helpers.js
-import * as vga from './vga.js';
-import * as input from './input.js';
-import * as timing from './timing.js';
-import { loadFont } from './assets.js';
+// helpers.js — Arkann-specific helpers.
+import * as vga from 'lib/vga.js';
+import * as input from 'lib/input.js';
+import * as timing from 'lib/timing.js';
+import { setFontFrom } from 'lib/assets.js';
 
 export async function loadFontInto(url) {
-  const font = await loadFont(url);
-  vga.setFont(font);
-  return font;
+  return setFontFrom(url);
 }
 
 export async function waitForAnyKey() {
@@ -21,6 +19,8 @@ export async function waitForButtonRelease() {
 }
 export function drainKeyboard() { while (input.kbhit()) input.getch(); }
 
+// taketext: Arkann's simpler text-entry box. Returns the entered string, or
+// null if ESC was pressed.
 export async function taketext(quote, length) {
   const xfontsize = vga.xfontsize, yfontsize = vga.yfontsize;
   const quotex = (160 - (xfontsize * quote.length) / 2) | 0;
@@ -60,6 +60,7 @@ export async function taketext(quote, length) {
   return cancelled ? null : str;
 }
 
+// continue_game: reproduces the original including the (visually inert) slide.
 export async function continue_game() {
   const xfontsize = vga.xfontsize, yfontsize = vga.yfontsize;
   const string = 'Continue? (Y/N)';
@@ -101,4 +102,3 @@ export async function continue_game() {
 
   return returnval;
 }
-

@@ -1,9 +1,10 @@
 // screens.js
-import * as vga from './vga.js';
-import * as input from './input.js';
-import * as timing from './timing.js';
+import * as vga from 'lib/vga.js';
+import * as input from 'lib/input.js';
+import * as timing from 'lib/timing.js';
+import { menubox } from 'lib/ui.js';
+import { loadPic } from 'lib/assets.js';
 import { state } from './state.js';
-import { loadPic } from './assets.js';
 import { loadFontInto, taketext, drainKeyboard } from './helpers.js';
 
 // ------------------------------------------------------------------ opscreen
@@ -49,7 +50,7 @@ export async function mainmenu() {
   vga.cls();
 
   // Title box
-  vga.menubox((160 - 10.5 * xf) | 0, 18, (160 + 10.5 * xf) | 0, 21 + 2 * yf);
+  menubox((160 - 10.5 * xf) | 0, 18, (160 + 10.5 * xf) | 0, 21 + 2 * yf);
   vga.drawtext((160 - 3.5 * xf) | 0, 20, 'Arkann!', 15, 4);
   vga.drawtext((160 - 10 * xf) | 0, 20 + yf, '(C)1997, Jacob Ewing', 15, 4);
 
@@ -58,7 +59,7 @@ export async function mainmenu() {
   {
     let x = menux, y = menuy;
     for (let n = 0; n < numoptions; n++) {
-      vga.menubox(x, y, x + xoptionsize - 1, y + yoptionsize - 1);
+      menubox(x, y, x + xoptionsize - 1, y + yoptionsize - 1);
       vga.drawtext(x + 2, y + 2, labels[n], 15, 4);
       y += (yoptionsize * 3) >> 1;
     }
@@ -233,7 +234,7 @@ export async function show_high_score_list() {
   const y1 = (100 - yboxsize / 2) | 0, y2 = y1 + yboxsize;
 
   vga.cls();
-  vga.menubox(x1, y1, x2, y2);
+  menubox(x1, y1, x2, y2);
   vga.drawtext(108, y1 + 3, 'High Scores:', 15, 4);
 
   let x = x1 + 2, y = y1 + 2 * yf;
@@ -367,7 +368,7 @@ export async function explain_game() {
       if (have_picture) {
         bx1 = 160 - picture[0] - 5; bx2 = 160 + picture[0] + 5;
         by1 = 100 - picture[1] - 5; by2 = 100 + picture[1] + 5;
-        vga.menubox(bx1, by1, bx2, by2);
+        menubox(bx1, by1, bx2, by2);
         vga.put(160 - (picture[0] / 2 | 0), 100 - (picture[1] / 2 | 0), picture, 4);
         ty1c = by2 + 10;
       } else {

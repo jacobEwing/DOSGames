@@ -1,16 +1,17 @@
 // main.js
-const HOME_URL = '/';
-import * as vga from './vga.js';
-import * as input from './input.js';
-import * as timing from './timing.js';
+import * as vga from 'lib/vga.js';
+import * as input from 'lib/input.js';
+import * as timing from 'lib/timing.js';
+import { loadLevels } from 'lib/assets.js';
 import { state } from './state.js';
-import { loadFont, loadLevels } from './assets.js';
 import { loadFontInto, drainKeyboard, continue_game } from './helpers.js';
 import { play_game } from './game.js';
 import {
   opscreen, mainmenu, show_credits, show_high_score_list,
   explain_game, test_high_scores,
 } from './screens.js';
+
+const HOME_URL = '/';
 
 async function main() {
   const canvas = document.getElementById('screen');
@@ -51,11 +52,8 @@ async function main() {
       case 4:
         input.setWantLock(false);
         if (document.pointerLockElement) document.exitPointerLock();
-        if (window.history.length > 1) {
-          window.history.back();
-        } else {
-          window.location.href = HOME_URL;
-        }
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = HOME_URL;
         return;
     }
   }

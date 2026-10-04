@@ -1,10 +1,11 @@
 // game.js — direct port of play_game() and all its helper functions.
 
-import * as vga from './vga.js';
-import * as input from './input.js';
-import * as timing from './timing.js';
+import * as vga from 'lib/vga.js';
+import * as input from 'lib/input.js';
+import * as timing from 'lib/timing.js';
+import { menubox } from 'lib/ui.js';
+import { loadPic, loadLevels } from 'lib/assets.js';
 import { state } from './state.js';
-import { loadPic, loadLevels } from './assets.js';
 
 // ---- Constants (from the C's #defines) --------------------------------------
 const PI = Math.PI;
@@ -113,9 +114,9 @@ async function drawscreen(levelnum) {
   vga.erase(MINX, MINY, MAXX, MAXY, 0, 0, backg);
 
   // Score board
-  vga.menubox(MINSBX, MINSBY, MAXSBX, MAXSBY);
+  menubox(MINSBX, MINSBY, MAXSBX, MAXSBY);
   // Title
-  vga.menubox(((MINSBX + MAXSBX) / 2 | 0) - 4 * vga.xfontsize, MINSBY + 9,
+  menubox(((MINSBX + MAXSBX) / 2 | 0) - 4 * vga.xfontsize, MINSBY + 9,
               ((MINSBX + MAXSBX) / 2 | 0) + 4 * vga.xfontsize, MINSBY + vga.yfontsize + 12);
   vga.box(((MINSBX + MAXSBX) / 2 | 0) - 4 * vga.xfontsize, MINSBY + 9,
           ((MINSBX + MAXSBX) / 2 | 0) + 4 * vga.xfontsize, MINSBY + vga.yfontsize + 12,
