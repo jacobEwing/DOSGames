@@ -17,7 +17,7 @@ const TITLE = "Jacob's Games";
 // Brief history, drawn below the menu box in the 4x6 font.
 const ABOUT_LINES = [
   'This is a faithful restoration of a game collection I wrote',
-  'as as a young man in the late 1990\'s. Orginially written',
+  'as as a young man in the mid 1990\'s. Orginially written',
   'in C using my own custom MCGA graphics library, it has been',
   'ported to the web for my reminiscense and your enjoyment.',
   'all assets used are the original files, and the JavaScript',
