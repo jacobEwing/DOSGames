@@ -2,7 +2,6 @@ import * as vga    from '../lib/vga.js';
 import * as assets from '../lib/assets.js';
 import * as ui     from '../lib/ui.js';
 
-// Buttons left-to-right.  `dir: null` means "Exit".
 const GAMES = [
   { pic: 'assets/hexodus.pic',  dir: './hexodus/'    },
   { pic: 'assets/arkann.pic',   dir: './arkann/'     },
@@ -15,20 +14,51 @@ const GAMES = [
 
 const TITLE = "Jacob's Games";
 
+// Brief history, drawn below the menu box in the 4x6 font.
+const ABOUT_LINES = [
+  'This is a faithful restoration of a game collection I wrote',
+  'as as a young man in the late 1990\'s. Orginially written',
+  'in C using my own custom MCGA graphics library, it has been',
+  'ported to the web for my reminiscense and your enjoyment.',
+  'all assets used are the original files, and the JavaScript',
+  'somewhat accurately reflects my coding at the time.'
+];
+
+let fontLarge = null;
+let fontSmall = null;
+let buttons   = null;
+let backg     = null;
+
 export async function runMenu() {
-  await assets.setFontFrom('assets/11x12.blf');
+  // One-time loads (cached after first call).
+  if (!fontLarge) fontLarge = await assets.loadFont('assets/11x12.blf');
+  if (!fontSmall) fontSmall = await assets.loadFont('assets/tidy.blf');
+  if (!backg)     backg     = await assets.loadPic('assets/undermnu.pic');
+  if (!buttons)   buttons   = await Promise.all(GAMES.map(g => assets.loadPic(g.pic)));
 
-  const backg = await assets.loadPic('assets/undermnu.pic');
-
-  // Warped background (matches the DOS build closely).
+  // Warped background.
   for (let y = 0; y < 200; y++) {
-    vga.roterase(0, y, 319, y, 160, 100, y / 30, 2, backg);
+    vga.roterase(0, y, 319, y, 160, 100, y / 30, 2 + y / 100, backg);
   }
 
-  const buttons = await Promise.all(GAMES.map(g => assets.loadPic(g.pic)));
+  // About blurb, drawn before ui.choice so the menu box sits on top of it.
+  vga.setFont(fontSmall);
+  let fy = 4;
+  for (const line of ABOUT_LINES) {
+    const fx = (161 - (vga.xfontsize * line.length) / 2) | 0;
+    vga.drawtext(fx, fy, line, 0, 4);
+    fy += vga.yfontsize + 2;
+  }
+  fy = 3;
+  for (const line of ABOUT_LINES) {
+    const fx = (160 - (vga.xfontsize * line.length) / 2) | 0;
+    vga.drawtext(fx, fy, line, 15, 4);
+    fy += vga.yfontsize + 2;
+  }
 
-  // 2-pixel gap so seven 40px buttons + grey box fit in 320.
-  const idx = await ui.choice(TITLE, buttons, 2);
+  // Menu — restore the large font for the title and labels.
+  vga.setFont(fontLarge);
+  const idx  = await ui.choice(TITLE, buttons, 2);
   const pick = GAMES[idx];
 
   if (pick.dir) {
@@ -39,5 +69,4 @@ export async function runMenu() {
   // exit menu - just go back in the history
   if (window.history.length > 1) window.history.back();
   else window.location.href = HOME_URL;
-
 }
