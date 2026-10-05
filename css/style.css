@@ -1,0 +1,33 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+canvas#screen {
+  /* 320 x 200 at 4x = 1280 x 800 */
+  width: 1280px;
+  height: 800px;
+  display: block;
+
+  /* Keep the framebuffer pixels crisp, no smoothing */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+
+  /* We handle cursor drawing in the framebuffer; hide the OS pointer */
+  cursor: none;
+}
+
+/* If the window is smaller than 1280x800, scale down while preserving aspect. */
+@media (max-width: 1280px) or (max-height: 800px) {
+  canvas#screen {
+    width: min(100vw, calc(100vh * 320 / 200));
+    height: auto;
+    aspect-ratio: 320 / 200;
+  }
+}
