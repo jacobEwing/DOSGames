@@ -28,6 +28,6 @@ canvas#screen {
   canvas#screen {
     width: min(100vw, calc(100vh * 320 / 200));
     height: auto;
-    aspect-ratio: 320 / 200;
+    aspect-ratio: 320 / 250;
   }
 }
