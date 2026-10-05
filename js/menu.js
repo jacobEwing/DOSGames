@@ -22,7 +22,7 @@ export async function runMenu() {
 
   // Warped background (matches the DOS build closely).
   for (let y = 0; y < 200; y++) {
-    vga.roterase(0, y, 319, y, 160, 100, y / 30, 2 + y / 100, backg);
+    vga.roterase(0, y, 319, y, 160, 100, y / 30, 2, backg);
   }
 
   const buttons = await Promise.all(GAMES.map(g => assets.loadPic(g.pic)));
