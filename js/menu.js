@@ -18,9 +18,9 @@ const TITLE = "Jacob's Games";
 const ABOUT_LINES = [
   'This is a faithful restoration of a game collection I wrote',
   'as as a young man in the mid 1990\'s. Orginially written',
-  'in C using my own custom MCGA graphics library, it has been',
-  'ported to the web for my reminiscense and your enjoyment.',
-  'all assets used are the original files, and the JavaScript',
+  'in C using my own custom MCGA graphics library, it has now',
+  'been ported to the web to share, reminisce, and play.',
+  'All assets used are the original files, and the JavaScript',
   'somewhat accurately reflects my coding at the time.'
 ];
 
